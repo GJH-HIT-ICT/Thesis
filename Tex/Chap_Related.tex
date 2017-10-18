@@ -20,7 +20,18 @@
   \label{fig:tweetDist}
 \end{figure}
 
-除了对宏观的流行度统计量的分析之外，还有一部分工作研究了流行度增长过程中的微观统计特征。Barabasi等人\citep{chen2005zhulu}研究了人类的行为数据，发现人类的行为模式中存在爆发现象：
+除了对宏观的流行度统计量的分析之外，还有一部分工作研究了流行度增长过程中的微观统计特征。Barabasi等人\citep{chen2005zhulu}研究了人类的行为数据，发现人类的行为模式并不是服从传统方法中假设的泊松过程，而是存在爆发现象，并提出了一种基于事件优先级的排队模型来解释这一现象。爆发现象是指人类在参与某类事件时，大部分时间都处于沉寂状态，不会采取任何行为动作；中间夹杂了少数爆发区域，在爆发区域内会有大量的行为数据产生，如图\ref{fig:burst}所示。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
+  \caption{Q判据等值面图}
+  \label{fig:busrt}
+\end{figure}
+
+爆发现象在在线内容的流行度增长过程中十分常见。Kaltenbrunner等人\citep{chen2005zhulu}研究了新闻评论网站Slashdot上\footnote{\url{}}新闻的评论情况，并对评论数据的时间间隔分布进行了分析。统计结果表明，评论数据的时间间隔分布是两个log-normal分布的混合，并且存在明显的周期现象。Bao等人\citep{chen2005zhulu}研究了新浪微博中消息的转发时间间隔数据，发现转发时间间隔分布服从幂律分布，这也说明了社交网络中消息的流行度累积过程中存在爆发现象。
+
+除爆发现象外，流行度的增长过程中存在着固定的模式。
+
 \section{流行度预测方法概述}
 \section{流行度预测问题的可预测性分析}
 

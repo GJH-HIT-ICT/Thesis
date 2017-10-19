@@ -4,7 +4,7 @@
 流行度预测问题自被提出以来，受到了学术界和产业界的广泛关注。本章从流行度的统计特征分析、流行度预测方法以及流行度预测问题的可预测性三个方面入手，对流行度预测领域的相关工作进行了系统的总结和归纳，以便读者更好地了解和掌握该领域的相关知识，进而更好地理解本文的工作。
 
 \section{流行度的统计特征分析}
-在线内容的流行度分析工作最早源于网站缓存策略的研究。Cunha等人\citep{chen2005zhulu}在研究站点中网页的访问情况时发现，网页被访问频率的分布服从Zipf定律\citep{chen2005zhulu}，也就是说：流行度排名为$i$的网页被用户访问的概率正比于$1/i$，如图\ref{fig:pageDist}所示。这一现象表明，网页的访问频次分布是不均匀的。Almeida等人\citep{chen2005zhulu}在研究万维网中所有网页的访问频次时，也发现了同样的分布规律。
+在线内容的流行度分析工作最早源于网站缓存策略的研究。Cunha等人\citep{cunha1995characteristics}在研究站点中网页的访问情况时发现，网页被访问频率的分布服从Zipf定律\citep{zipf2016human}，也就是说：流行度排名为$i$的网页被用户访问的概率正比于$1/i$，如图\ref{fig:pageDist}所示。这一现象表明，网页的访问频次分布是不均匀的。Almeida等人\citep{almeida1996characterizing}在研究万维网中所有网页的访问频次时，也发现了同样的分布规律。
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
@@ -12,7 +12,7 @@
   \label{fig:pageDist}
 \end{figure}
 
-随着信息技术的发展，视频分享类网站和社交网络平台不断涌现，也引起了研究人员的关注。Gill等人\citep{chen2005zhulu}收集并分析了视频网站Youtube\footnote{\url{https://www.youtube.com}}上视频的访问数据，发现视频的访问频次信息依然服从Zipf定律。Cha等人\citep{chen2005zhulu}对Youtube网站上的视频数据进行了详细的分析，发现网站中不同类别下的视频的观看数分布都服从幂律分布。Kwak等人\citep{chen2005zhulu}研究了社交网络平台Twitter\footnote{\url{https://twitter.com}}上消息的转发情况，发现参与消息转发的人数服从幂律分布，如图\ref{fig:tweetDist}所示。
+随着信息技术的发展，视频分享类网站和社交网络平台不断涌现，也引起了研究人员的关注。Gill等人\citep{gill2007youtube}收集并分析了视频网站Youtube\footnote{\url{https://www.youtube.com}}上视频的访问数据，发现视频的访问频次信息依然服从Zipf定律。Cha等人\citep{cha2009analyzing}对Youtube网站上的视频数据进行了详细的分析，发现网站中不同类别下的视频的观看数分布都服从幂律分布。Kwak等人\citep{kwak2010twitter}研究了社交网络平台Twitter\footnote{\url{https://twitter.com}}上消息的转发情况，发现参与消息转发的人数服从幂律分布，如图\ref{fig:tweetDist}所示。
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
@@ -20,9 +20,9 @@
   \label{fig:tweetDist}
 \end{figure}
 
-除了对宏观的流行度统计量的分析之外，还有一部分工作研究了流行度增长过程中的微观统计特征。Barabasi等人\citep{chen2005zhulu}研究了人类的行为数据，发现人类的行为模式并不是服从传统方法中假设的泊松过程，而是存在爆发现象，并提出了一种基于事件优先级的排队模型来解释这一现象。爆发现象是指人类在参与某类事件时，大部分时间都处于沉寂状态，不会采取任何行为动作；中间夹杂了少数爆发区域，在爆发区域内会有大量的行为数据产生，如图\ref{fig:burst}所示。
+除了对宏观的流行度统计量的分析之外，还有一部分工作研究了流行度增长过程中的微观统计特征。Barabasi等人\citep{barabasi05}研究了人类的行为数据，发现人类的行为模式并不是服从传统方法中假设的泊松过程，而是存在爆发现象，并提出了一种基于事件优先级的排队模型来解释这一现象。爆发现象是指人类在参与某类事件时，大部分时间都处于沉寂状态，不会采取任何行为动作；中间夹杂了少数爆发区域，在爆发区域内会有大量的行为数据产生，如图\ref{fig:burst}所示。
 
-爆发现象在在线内容的流行度增长过程中十分常见。Kaltenbrunner等人\citep{chen2005zhulu}研究了新闻评论网站Slashdot\footnote{\url{https://slashdot.org}}上新闻的评论情况，并对评论数据的时间间隔分布进行了分析。统计结果表明，评论数据的时间间隔分布是两个log-normal分布的混合，并且存在明显的周期现象。Bao等人\citep{chen2005zhulu}研究了新浪微博中消息的转发时间间隔数据，发现转发时间间隔分布服从幂律分布，这也说明了社交网络中消息的流行度累积过程中存在爆发现象。
+爆发现象在在线内容的流行度增长过程中十分常见。Kaltenbrunner等人\citep{kaltenbrunner2007description}研究了新闻评论网站Slashdot\footnote{\url{https://slashdot.org}}上新闻的评论情况，并对评论数据的时间间隔分布进行了分析。统计结果表明，评论数据的时间间隔分布是两个log-normal分布的混合，并且存在明显的周期现象。Bao等人\citep{bao2013cumulative}研究了新浪微博中消息的转发时间间隔数据，发现转发时间间隔分布服从幂律分布，这也说明了社交网络中消息的流行度累积过程中存在爆发现象。
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
@@ -30,7 +30,7 @@
   \label{fig:burst}
 \end{figure}
 
-除爆发现象外，研究人员还发现流行度的增长过程中存在着固定的模式。Yang等人\citep{chen2005zhulu}研究了Twitter平台上消息的传播过程，提出了K-SC（K-Spectral Centroid）聚类方法，对消息的流行度变化过程进行聚类，将消息的流行度变化过程聚为六类，如图\ref{fig:pattern}所示。此外，Costa等人\citep{chen2005zhulu}还发现流行度的增长过程中呈现出明显的周期性特点。
+除爆发现象外，研究人员还发现流行度的增长过程中存在着固定的模式。Yang等人\citep{yang2011patterns}研究了Twitter平台上消息的传播过程，提出了K-SC（K-Spectral Centroid）聚类方法，对消息的流行度变化过程进行聚类，将消息的流行度变化过程聚为六类，如图\ref{fig:pattern}所示。Crane等人\citep{crane2008robust}在研究Yotube网站中视频的观看数据时发现，视频的观看到达时间服从幂律分布，呈现出明显的``爆发-衰落"现象。此外，Costa等人\citep{ferraz2015rsc}还发现流行度的增长过程中呈现出明显的周期性特点。
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
@@ -58,9 +58,20 @@
   \label{fig:pinto}
 \end{figure}
 
-内容特征方面，Tsagkias等人\citep{chen2005zhulu}抽取了新闻的内容特征，来对新闻的评论数进行事前预测：在新闻发布之前，利用新闻的元信息，来预测新闻的评论数。作者将这一预测问题形式化为两阶段分类问题：新闻发布能否接收到评论，以及接收到的评论数能否超出给定阈值。在特征方面，作者抽取了新闻中重要性较高的前100个词的词频信息作为新闻的文本特征，新闻中包含的不同类型的命名实体的个数作为新闻的语义特征。此外，作者还抽取了新闻的其他元信息特征。实验结果表明，文本特征和语义特征对分类结果有较好的指示作用。Hong等人\citep{chen2005zhulu}同样将Twitter平台中消息的流行度预测问题形式化为一个两阶段分类问题：消息是否会被转发以及消息最终的流行度等级。作者利用TF-IDF模型和LDA主体模型\citep{chen2005zhulu}来抽取消息的内容特征，同时结合网络拓扑结构特征以及时序特征来进行预测。Bandari等人\citep{chen2005zhulu}研究了新闻订阅站点Feedzilla\footnote{\url{}}的数据在Twitter平台上的流行度情况。作者抽取了新闻的四类内容特征来进行预测，包括新闻所属的类别、新闻源站点的信息、新闻的倾向性特征和新闻中包含的命名实体。作者分别使用回归和分类模型对新闻的流行度进行了预测，得到了很好的预测效果。Bian等人\citep{chen2005zhulu}研究了腾讯微博\footnote{\url{}}中消息的传播情况和用户的参与情况，从兴趣导向、社交影响和病毒式传播三个方面，建模了用户和消息之间的相互作用，进而对消息的流行度和用户的参与情况进行预测。建模过程中，作者提出了一种多任务迁移模型来建模消息的内容，提取出消息中的主题信息，用于后续的预测任务。
+内容特征方面，Tsagkias等人\citep{chen2005zhulu}抽取了新闻的内容特征，来对新闻的评论数进行事前预测：在新闻发布之前，利用新闻的元信息，来预测新闻的评论数。作者将这一预测问题形式化为两阶段分类问题：新闻发布能否接收到评论，以及接收到的评论数会高还是低。在特征方面，作者抽取了新闻中重要性较高的前100个词的词频信息作为新闻的文本特征，新闻中包含的不同类型的命名实体的个数作为新闻的语义特征。此外，作者还抽取了新闻的其他元信息特征。实验结果表明，文本特征和语义特征对分类结果有较好的指示作用。Hong等人\citep{chen2005zhulu}同样将Twitter平台中消息的流行度预测问题形式化为一个两阶段分类问题：消息是否会被转发以及消息最终的流行度等级。作者利用TF-IDF模型和LDA主体模型\citep{chen2005zhulu}来抽取消息的内容特征，同时结合网络拓扑结构特征以及时序特征来进行预测。Bandari等人\citep{chen2005zhulu}研究了新闻订阅站点Feedzilla\footnote{\url{}}的数据在Twitter平台上的流行度情况。作者抽取了新闻的四类内容特征来进行预测，包括新闻所属的类别、新闻源站点的信息、新闻的倾向性特征和新闻中包含的命名实体。作者分别使用回归和分类模型对新闻的流行度进行了预测，得到了很好的预测效果。Bian等人\citep{chen2005zhulu}研究了腾讯微博\footnote{\url{}}中消息的传播情况和用户的参与情况，从兴趣导向、社交影响和病毒式传播三个方面，建模了用户和消息之间的相互作用，进而对消息的流行度和用户的参与情况进行预测。建模过程中，作者提出了一种多任务迁移模型来建模消息的内容，提取出消息中的主题信息，用于后续的预测任务。
 
-用户特征方面，最常见的用户特征是用户在社交网络中的拓扑结构信息\citep{chen2005zhulu}，例如Twitter平台中用户的粉丝数和关注数信息。用户的某些元信息也会被提取作为特征，包括等。Cui等人\citep{chen2005zhulu}在研究转发
+用户特征方面，最常见的用户特征是用户在社交网络中的拓扑结构信息，例如Twitter平台中用户的粉丝数和关注数信息\citep{chen2005zhulu}（Predicting Future Popularity Trend of Events in Microblogging Platforms，A Short-Term Prediction Model of Topic Popularity
+on Microblogs，Predicting the Audience Size of a Tweet，Predicting Future Retweet Counts in a Microblog，Predicting Bursts and Popularity of Hashtags in Real-Time）。用户的某些元信息也会被提取作为特征，包括用户账号的创建时长、用户历史发布的消息数\citep{chen2005zhulu}、视频网站中的用户类别\citep{chen2005zhulu}（The Untold Story of the Clones: Content-agnostic Factors
+that Impact YouTube Video Popularity）等。Cui等人\citep{chen2005zhulu}在研究Twitter平台上的消息爆发预测时，直接将用户身份作为特征。消息爆发预测问题旨在于给定消息在观测窗口内的流行度变化情况，预测消息最终的流行度能否达到爆发的阈值。作者在建模时借助于传感器的思想，将网络中所有的用户都当作传感器，只需要根据部分关键传感器的激活状态，即用户是否参与消息转发，就可以来判断消息最终能否爆发。因此，作者将爆发预测问题形式化为一个二分类问题，以所有的用户为特征，将用户在观测窗口内的激活状态转化成$0-1$向量作为输入，以消息最终的爆发情况作为输出，训练得到一个二分类器，进而对待预测的消息进行预测。
+
+传播级联的结构特征方面，Bao等人\citep{chen2005zhulu}分析了新浪微博中消息的传播级联情况，重点研究了传播级联形成的转发树的深度和链接密度情况，发现这两个特征与流行度的变化之间存在着非常强的相关性。作者将这两个因素加入到S-H模型中，发现预测精度得到了很大的提升。
+
+除上述四类特征之外，研究人员还探寻了很多其他因素对流行度的影响。Brodersen等人\citep{chen2005zhulu}研究了Youtube视频的观看数与地理因素之间的关系（YouTube Around the World: Geographic Popularity of Videos）。Jenders等人\citep{chen2005zhulu}（Analyzing and Predicting Viral Tweets）研究了内容的情感倾向性对Twitter平台中消息转发数的影响。Weng等人\citep{chen2005zhulu}研究了流行度与网络的社区结构之间的关系，Junus等人\citep{chen2005zhulu}也将社区结构因素建模到流行度预测模型中。此外，还有工作考虑了用户有限的关注度对流行度的影响\citep{chen2005zhulu}。
+
+问题形式化方面，不同于传统工作中将流行度预测形式化为一个回归或者分类问题，Cheng等人\citep{chen2005zhulu}将流行度预测问题形式化为阶段性的增长预测问题。作者指出，在以往的流行度分类预测问题中，由于流行度本身的分布是幂律的，导致各个类别样本数极度不均匀，从而影响最终的预测效果。因此，作者提出了``$kto2k$"问题：给定当前流行度为$k$的消息，预测它们最终的流行度能否增长到$2k$。基于样本集中流行度的分布，作者证明了提出的``$kto2k$"问题是一个均衡的二分类问题，并抽取了内容特征、用户特征、网络结构特征以及时序特征来进行预测。实验结果表明，随着$k$的增长，分类预测的准确率也在不断提高。
+
+综上所述，基于特征的有监督学习方法在进行流行度预测时，关键在于抽取出会影响流行度变化的特征，但是特征工程是一项非常耗时耗力的工作，而且很大程度上受限于研究人员的先验认识。
+
 \subsection{基于点过程的流行度到达过程建模方法}
 \subsection{基于表示学习的方法}
 \subsection{其他方法}

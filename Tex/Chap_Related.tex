@@ -156,9 +156,57 @@ x(t)=p(t) \sum_{t_i<t}n_i \phi(t-t_i)\text{，}
 
 在自增强泊松过程和自激励Hawkes过程在外，也有一部分工作采用了其他的随机过程来刻画流行度的增长情况。Lerman等人\citep{lerman2010using}研究了Digg网站上故事的得票数的变化情况。分析发现，故事在网站中的曝光度、故事本身的内容吸引力以及用户间的社会关系对故事最终的得票数有很大的影响。作者将这三个因素建模到故事得票数增长模型中，得到了很好的预测效果。Costa等人\citep{ferraz2015rsc}分别使用了使用泊松过程（Poisson process）\citep{kingman1993poisson}和自相关过程（Self-correlated process）来建模了消息的转发时间间隔的产生过程。Yang等人\citep{yang2013mixture}采用了多元Hawkes过程来建模多条消息的转发情况。Rizoiu等人\citep{rizoiu2017expecting}提出了Hawkes强度过程（Hawkes intensity process，HIP）来建模流行度时间序列的产生过程。Yu等人\citep{yu2015micro}研究了微博平台中消息的微观转发过程，并直接使用了生存分析理论来建模平台中用户发布的消息被自己的粉丝转发的概率。
 
-纵观上述方法，基于随机过程的方法能够较好地刻画流行度的到达过程，但是由于是非监督学习的方法，它们的预测能力有限；同时流行度增长的强度函数的设计，很大程度上也依赖于研究人员的先验知识；另外，这类方法在建模过程中只利用了待预测消息自身的信息，没有显示地利用海量的历史消息来辅助提升预测性能。
+纵观上述方法，基于随机过程的方法能够较好地刻画流行度的到达过程，但是由于是非监督学习的方法，它们的预测能力有限；同时流行度增长的强度函数的设计，很大程度上也依赖于研究人员的先验知识；另外，这类方法在建模过程中只利用了待预测消息自身的信息，没有显式地利用海量的历史消息来辅助提升预测性能。
+
 \subsection{基于表示学习的方法}
-表示学习目前已经发展成为一个重要的领域，在很多实际问题中都有着重要的应用。在流行度预测领域，
+表示学习目前已经发展成为一个重要的领域，在很多实际问题中都有着重要的应用。在流行度预测领域，Bourigault等人\citep{bourigault2014learning}通过学习用户表示来预测消息的传播过程。作者将消息的传播过程类比为一个热传导的过程：消息的发布者作为``热源"，距离用户越近的用户，会越早地参与到热传导中来。因此，作者将所有的用户都嵌入到一个隐空间中，用户参与消息转发的先后顺序由用户与消息源发用户在隐空间中的距离决定，如图\ref{fig:heat}所示。借助排序的框架，作者根据数据集中用户参与转发的先后顺序，学习到所有用户的表达，并根据当前的转发情况，对接下来参与转发的的用户进行预测。Liu等人\citep{liu2016learning}在该工作的基础上，考虑了用户作为发布者和转发者的区别，为每个用户分别学习了影响力表达和易感性表达，并对用户参与转发的先后顺序的差异做了进一步约束。此外，Bourigault等人\citep{bourigault2016representation}还在独立级联模型\citep{goldenberg2001talk}中引入用户表示学习，来建模消息的转发过程。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
+  \caption{Q判据等值面图}
+  \label{fig:heat}
+\end{figure}
+
+在深度学习领域，以循环神经网络（Recurrent neural network，RNN）\citep{mikolov2010recurrent}和带长短时记忆单元（Long-short term memory，LSTM）\citep{hochreiter1997long}以及门控循环单元（Gated recurrent unit，GRU）\citep{cho2014learning}的循环神经网络为代表的模型在语音识别、文本生成等一系列序列建模领域都取得了突破性的成果。流行度的增长过程本身也是一个转发事件序列不断生长的过程，因此，这类序列建模的方法也可以用来建模流行度序列的增长过程。Du等人\citep{du2016recurrent}在建模带标记的事件序列时，在随机点过程的框架下，用RNN网络来建模事件序列的强度函数。作者在论文中指出，传统的基于随机过程的方法都需要人工去定义强度函数的形式，而人工定义的函数形式与真正的强度函数可能相去甚远，导致模型的预测能力下降。因此，作者使用了RNN网络来建模传播过程中强度函数的变化，模型的整体结构如图\ref{fig:rmtpp}所示。该模型以事件发生时刻和事件类型作为输入，利用RNN网络来学习历史事件集合的表达，在历史事件表达的基础上计算得到事件的累积强度函数，并对下一次事件的发生时刻和类型做出预测。Wang等人\citep{wang2017marked}在该工作的基础上，引入了事件发生时刻和事件类型之间的依赖关系，进一步提升了模型的预测效果。Xiao等人\citep{xiao2017modeling}也采用了RNN网络来建模事件的强度函数。在建模过程中，作者将强度函数分解成历史事件激励和事件固有的传播能力两部分，分别使用了两个RNN网络来建模事件的时刻序列和流行度时间序列，再将两个RNN网络的结果融合得到事件强度的表示。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
+  \caption{Q判据等值面图}
+  \label{fig:rmtpp}
+\end{figure}
+
+尽管以RNN网络为代表的模型在流行度建模领域取得了一定的成果，Wang等人\citep{wang2017cascade}在论文中指出：RNN网络可以建模序列中的顺序依赖关系，但是很难处理消息转发过程中存在的``跳跃依赖"。消息转发过程中的跳跃依赖如图\ref{fig:crossDependence}所示。在图示的转发过程中，用户$u_3$的行为只依赖于$u_1$，而不依赖与$u_2$；同理用于$u_4$的转发行为依赖于$\{u_1,u_2\}$，而不依赖于$u_3$。传统的RNN网络无法建模这类跳跃依赖问题。因此，作者在RNN网络中的基础上，引入了关注机制\citep{bahdanau2014neural}来学习传播过程中更精确的依赖关系。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
+  \caption{Q判据等值面图}
+  \label{fig:crossDependence}
+\end{figure}
+
+除上述用户表示学习模型和深度序列模型外，还存在一部分基于深度模型的``端到端"的流行度预测方法。Li等人\citep{li2017deepcas}提出了DeepCas模型在对消息的流行度进行预测。DeepCas模型从消息的转发树结构出发，利用随机游走\citep{spitzer2013principles}的方式从转发树中采样得到若干转发序列；再利用带GRU单元的双向RNN网络学习得到转发序列的表达；再利用权重机制将这些序列的表达融合得到消息的表达；最后利用一个多层神经网络来学习消息的表达和消息的流行度之间的变换关系。DeepCas模型的整体结构如图\ref{fig:deepCas}所示。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
+  \caption{Q判据等值面图}
+  \label{fig:deepCas}
+\end{figure}
+
+Cao等人\citep{cao2017deep}从自激励Hawkes过程中受到启发，将影响消息流行度的三个关键因素：用户影响力、每次转发带来的激励效应以及激励的时间衰减效应分别用深度模型来建模，提出了DeepHawkes模型。DeepHawkes模型也是从消息的转发树出发，抽取出消息转发树中的所有路径，再利用深度序列模型对所有的路径进行建模，最后根据每条路径中尾节点的参与时间对路径的表达进行加权，得到消息的最终表达。消息的表达与消息的流行度之间的变换函数是通过一个全连接的神经网络学习得到。DeepHawkes模型的整体结构如图\ref{fig:deepHawkes}所示。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
+  \caption{Q判据等值面图}
+  \label{fig:deepHawkes}
+\end{figure}
+
 \subsection{其他方法}
+在上述三类方法外，还有一部分工作从不同的角度来尝试对消息的流行度做出更精确的预测。Mishra等人\citep{mishra2016feature}提出了一种结合特征类方法和随机过程类方法的模型。作者先利用自激励Hawkes过程学习得到消息自身的吸引力、转发用户的影响力以及时间衰减效应的参数，然后将这三部分因素作为特征，与人工提取的特征一起，利用监督学习的框架，来预测消息最终的流行度。实验结果表明，作者提出的模型的预测效果要明显优于特征类方法和随机过程类方法的效果。Xiao等人\citep{xiao2016modeling}同样从融合特征类方法和随机过程类方法的角度，提出了一种新方法来预测论文的引用数。作者在自激励Hawkes过程的框架下，将论文自身的吸引力用一系列人工提取的特征来表示，对应的强度函数如下：
+\begin{equation}
+\label{eq:citationIntensity}
+x(t)=[\boldsymbol{\beta} \boldsymbol{\psi}(t)]e^{-w_1 t}+\alpha \sum_{t_i<t}e^{-w_2(t-t_i)}\text{，}
+\end{equation}
+对比公式（\ref{eq:hawkesIntensity}），可以看到用于表示论文自身吸引力的变量由$[\boldsymbol{\beta} \boldsymbol{\psi}(t)]$替代，其中$\boldsymbol{\psi}(t)$是人工提取的指示特征向量，$\boldsymbol{\beta}$是待学习的相关系数向量。数据集上的结果表明，融合后的模型比随机过程类方法有这更好的预测效果。
+
+还有一部分工作从分组的角度来考虑流行度预测问题。Cao等人\citep{cao2017predicting}
 \section{流行度预测问题的可预测性分析}
 

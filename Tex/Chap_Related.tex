@@ -15,26 +15,26 @@
 随着信息技术的发展，视频分享类网站和社交网络平台不断涌现，也引起了研究人员的关注。Gill等人\citep{gill2007youtube}收集并分析了视频网站Youtube\footnote{\url{https://www.youtube.com}}上视频的访问数据，发现视频的访问频次信息依然服从Zipf定律。Cha等人\citep{cha2009analyzing}对Youtube网站上的视频数据进行了详细的分析，发现网站中不同类别下的视频的观看数分布都服从幂律分布。Kwak等人\citep{kwak2010twitter}研究了社交网络平台Twitter\footnote{\url{https://twitter.com}}上消息的转发情况，发现参与消息转发的人数服从幂律分布，如图\ref{fig:tweetDist}所示。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=0.75\textwidth]{tweetDist}
+  \caption{Twitter平台中消息转发数和转发树深度的分布\citep{kwak2010twitter}}
   \label{fig:tweetDist}
 \end{figure}
 
 除了对宏观的流行度统计量的分析之外，还有一部分工作研究了流行度增长过程中的微观统计特征。Barabasi等人\citep{barabasi05}研究了人类的行为数据，发现人类的行为模式并不是服从传统方法中假设的泊松过程，而是存在爆发现象，并提出了一种基于事件优先级的排队模型来解释这一现象。爆发现象是指人类在参与某类事件时，大部分时间都处于沉寂状态，不会采取任何行为动作；中间夹杂了少数爆发区域，在爆发区域内会有大量的行为数据产生，如图\ref{fig:burst}所示。
-
-爆发现象在在线内容的流行度增长过程中十分常见。Kaltenbrunner等人\citep{kaltenbrunner2007description}研究了新闻评论网站Slashdot\footnote{\url{https://slashdot.org}}上新闻的评论情况，并对评论数据的时间间隔分布进行了分析。统计结果表明，评论数据的时间间隔分布是两个log-normal分布的混合，并且存在明显的周期现象。Bao等人\citep{bao2013cumulative}研究了新浪微博中消息的转发时间间隔数据，发现转发时间间隔分布服从幂律分布，这也说明了社交网络中消息的流行度累积过程中存在爆发现象。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=1\textwidth]{burst}
+  \caption{人类行为模式示例\citep{barabasi05}：（d）参与时间；（e）时间间隔；（f）时间间隔分布}
   \label{fig:burst}
 \end{figure}
 
-除爆发现象外，研究人员还发现流行度的增长过程中存在着固定的模式。Yang等人\citep{yang2011patterns}研究了Twitter平台上消息的传播过程，提出了K-SC（K-Spectral Centroid）聚类方法，对消息的流行度变化过程进行聚类，将消息的流行度变化过程聚为六类，如图\ref{fig:pattern}所示。Crane等人\citep{crane2008robust}在研究Yotube网站中视频的观看数据时发现，视频的观看到达时间服从幂律分布，呈现出明显的``爆发-衰落"现象。此外，Costa等人\citep{ferraz2015rsc}还发现流行度的增长过程中呈现出明显的周期性特点。
+爆发现象在在线内容的流行度增长过程中十分常见。Kaltenbrunner等人\citep{kaltenbrunner2007description}研究了新闻评论网站Slashdot\footnote{\url{https://slashdot.org}}上新闻的评论情况，并对评论数据的时间间隔分布进行了分析。统计结果表明，评论数据的时间间隔分布是两个log-normal分布的混合，并且存在明显的周期现象。Bao等人\citep{bao2013cumulative}研究了新浪微博中消息的转发时间间隔数据，发现转发时间间隔分布服从幂律分布，这也说明了社交网络中消息的流行度累积过程中存在爆发现象。
+
+除爆发现象外，研究人员还发现流行度的增长过程中存在着固定的模式。Yang等人\citep{yang2011patterns}研究了Twitter平台上消息的传播过程，提出了K-SC（K-Spectral Centroid）聚类方法，对消息的流行度变化过程进行聚类，将消息的流行度变化过程聚为六类，如图\ref{fig:pattern}所示。Crane等人\citep{crane2008robust}在研究Yotube网站中视频的观看数据时发现，视频的观看到达时间服从幂律分布，呈现出明显的``爆发-衰落"现象。此外，Costa等人\citep{ferraz2015rsc}还发现流行度增长过程中呈现出明显的周期性特点。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=0.8\textwidth]{pattern}
+  \caption{Twitter平台中消息流行度变化的六种模式\citep{yang2011patterns}}
   \label{fig:pattern}
 \end{figure}
 
@@ -43,18 +43,20 @@
 现有的流行度预测方法主要包含三类：基于特征的有监督学习方法、基于随机过程的流行度到达过程建模方法和基于表示学习的方法。本节会依次对这三类方法进行介绍和总结。
 \subsection{基于特征的有监督学习方法}
 基于特征的流行度预测方法主要通过借助已有的有监督学习模型，结合人工抽取的特征，来对流行度的增长过程进行预测。在这类方法中，流行度预测问题通常会被形式化为分类或者回归问题：给定一组历史消息的各种特征信息以及消息在观测窗口$[0,T_r]$和预测窗口$[0,T_s]$内的流行度数据作为训练样本，利用现有的分类或回归方法学习得到预测模型，进而对待预测的消息的流行度作出预测。这类方法的核心在于寻找对于流行度预测有着重要指示作用的特征。常见的用于流行度预测的特征包括消息内容特征、用户特征、时序特征和传播级联的结构特征。
+
+时序特征方面，常用于流行度预测的时序特征包括观测窗口内的累积流行度特征和流行度时间序列特征。Cha等人\citep{cha2009analyzing}分析了Youtube网站上视频的流行度增长数据，发现视频上传7天后的访问量和视频上传后一天以及上传后两天的访问量之间存在着非常强的相关性，进而提出了预测视频近期流行度的任务，并指出视频上传后短期内的累计流行度是重要的指示特征。Szabo等人\citep{szabo2010predicting}研究了Digg\footnote{\url{http://digg.com}}网站上的新闻数据和Youtube网站上的视频数据，发现这些内容早期的流行度和后期的流行度在进行对数变换后，存在着非常强的线性相关性，如图\ref{fig:loglinear}所示。基于这一观测，作者提出了S-H（Szabo-Huberman）模型，将消息在观测窗口内的累积流行度作为特征，利用对数线性回归模型来预测消息在预测时刻的流行度。Gursun等人\citep{gursun2011describing}分析了Youtube网站中部分视频在上传后一年内完整的观看频次序列，发现可以根据将视频按照访问频次分为两类：长期流行的视频和短期流行的视频，并利用时间序列分析模型中的自回归移动平均模型（Autoregressive Moving Average，ARMA）\citep{marple1987digital}，对长期流行的视频的流行度变化过程进行了预测。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=0.9\textwidth]{loglinear}
+  \caption{Digg平台和Youtube平台上早期流行度和后期流行度间的对数相关性\citep{sh2008Corr}}
   \label{fig:loglinear}
 \end{figure}
 
-时序特征方面，常用于流行度预测的时序特征包括观测窗口内的累积流行度特征和流行度时间序列特征。Cha等人\citep{cha2009analyzing}分析了Youtube网站上视频的流行度增长数据，发现视频上传7天后的访问量和视频上传后一天以及上传后两天的访问量之间存在着非常强的相关性，进而提出了预测视频近期流行度的任务，并指出视频上传后短期内的累计流行度是重要的指示特征。Szabo等人\citep{szabo2010predicting}研究了Digg\footnote{\url{http://digg.com}}网站上的新闻数据和Youtube网站上的视频数据，发现这些内容早期的流行度和后期的流行度在进行对数变换后，存在着非常强的线性相关性，如图\ref{fig:loglinear}所示。基于这一观测，作者提出了S-H（Szabo-Huberman）模型，将消息在观测窗口内的累积流行度作为特征，利用对数线性回归模型来预测消息在预测时刻的流行度。Gursun等人\citep{gursun2011describing}分析了Youtube网站中部分视频在上传后一年内完整的观看频次序列，发现可以根据将视频按照访问频次分为两类：长期流行的视频和短期流行的视频，并利用时间序列分析模型中的自回归移动平均模型（Autoregressive Moving Average，ARMA）\citep{marple1987digital}，对长期流行的视频的流行度变化过程进行了预测。Pinto等人\citep{pinto2013using}研究了Youtube网站中视频的流行度时间序列数据。作者将视频在观测窗口等分为若干长度相等的区间，并抽取了各时间区间内视频的观看数的增长量作为特征。作者在研究视频的时间序列后发现S-H模型的假设存在着局限性：早期累计流行度相近的视频，后期的流行度变化过程可能会有很大的差距，如图\ref{fig:pinto}所示。作者提出将消息在观测窗口内的时间序列数据作为特征，利用多元线性回归模型来预测消息的流行度。
+Pinto等人\citep{pinto2013using}研究了Youtube网站中视频的流行度时间序列数据。作者将视频在观测窗口等分为若干长度相等的区间，并抽取了各时间区间内视频的观看数的增长量作为特征。作者在研究视频的时间序列后发现S-H模型的假设存在着局限性：早期累计流行度相近的视频，后期的流行度变化过程可能会有很大的差距，如图\ref{fig:pinto}所示。作者提出将消息在观测窗口内的时间序列数据作为特征，利用多元线性回归模型来预测消息的流行度。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=1\textwidth]{pinto}
+  \caption{S-H模型假设的局限性示例\citep{pinto2013using}}
   \label{fig:pinto}
 \end{figure}
 
@@ -131,21 +133,20 @@ p_1(t_i^m|t_{i-1}^m) & =x(t)\ast exp\{-\int_{t_{i-1}^m}^{t_i^m} x(t)dt\}\text{�
 \label{eq:intensityRPP}
 x(t)=\lambda f(t;\theta)i(t)\text{，}
 \end{equation}
-其中$\lambda$是对论文本身质量的度量；$f(t;\theta)$是一个时序释放函数，用于刻画论文的吸引力随时间的变化情况，$\theta$是时序释放函数的参数；$i(t)$是自增强函数，用于刻画论文引用中的``富者愈富"现象。在论文引用数据集上，作者选取了Log-normal函数作为时序释放函数，并将自增强函数$i(t)$定义为到$t$时刻为止的论文引用数。数据集上的实验结果表明，作者提出的自增强泊松过程模型（RPP模型）可以很好地刻画论文引用的到达过程。此外，作者还对模型中的参数引入了先验，进一步提升了模型的预测效果。Gao等人\citep{gao2015modeling}将RPP模型应用到微博平台上消息的转发数预测中。作者详细分析了微博平台中消息转发数据的特点，并对RPP模型中的时序释放函数和自增强函数的形式进行了相应的修正。此外，作者还分析了微博平台中时间的异质性，引入``微博时间"的概念来对微博平台中的物理时间进行映射，从而消除时间异质性对预测效果的影响。修正后的RPP模型在消息转发数预测任务上取得了非常好的效果。
+其中$\lambda$是对论文本身质量的度量；$f(t;\theta)$是一个时序释放函数，用于刻画论文的吸引力随时间的变化情况，$\theta$是时序释放函数的参数；$i(t)$是自增强函数，用于刻画论文引用中的``富者愈富"现象。在论文引用数据集上，作者选取了Log-normal函数作为时序释放函数，并将自增强函数$i(t)$定义为到$t$时刻为止的论文引用数。数据集上的实验结果表明，作者提出的自增强泊松过程模型（RPP模型）可以很好地刻画论文引用的到达过程。此外，作者还对模型中的参数引入了先验，进一步提升了模型的预测效果。Gao等人\citep{gao2015modeling}将RPP模型应用到微博平台上消息的转发数预测中。作者详细分析了微博平台中消息转发数据的特点，并对RPP模型中的时序释放函数和自增强函数的形式进行了相应的修正。此外，作者还分析了微博平台中时间的异质性，引入``微博时间"的概念来对微博平台中的物理时间进行映射，从而消除时间异质性对预测效果的影响。修正后的RPP模型在微博转发数预测任务上取得了非常好的效果。
 
 Bao等人在\citep{bao2015modeling}中指出，RPP模型在建模过程中，是将消息传播当做一个单源传播的过程，没有考虑转发操作带来的激励作用，这样的建模方式不适用于微博平台上的转发数据，因为微博平台中用户间的转发行为会影响消息最终的转发数。因此，作者提出利用自激励Hawkes过程（Self-exciting Hawkes process, SEHP）来建模每次转发带来的激励作用。基于自激励Hawkes过程，作者提出了如下强度函数：
 \begin{equation}
 \label{eq:hawkesIntensity}
 x(t)=v e^{-\beta t}+\alpha \sum_{j=1}^{j_{max}(t)} e^{-\beta(t-t_j)}\text{，}
 \end{equation}
-其中，$j_{max}(t)$刻画了到$t$时刻为止的转发次数，$v$是对消息本身吸引力的度量，$\alpha$刻画了每次转发带来的激励强度，函数$e^{-\beta t}$刻画了激励强度随时间的衰减效应。相比于RPP模型，SEHP模型能更好地捕获每次转发带来的影响，如图\ref{fig:sehp}所示。
+其中，$j_{max}(t)$刻画了到$t$时刻为止的转发次数，$v$是对消息本身吸引力的度量，$\alpha$刻画了每次转发带来的激励强度，函数$e^{-\beta t}$刻画了激励强度随时间的衰减效应。相比于RPP模型，SEHP模型能更好地捕获每次转发带来的影响，如图\ref{fig:sehp}所示。在该工作的基础上，作者还提出了ISEHP模型\citep{bao2016modeling}，进一步考虑了不同转发用户带来的激励强度的差异以及微博平台上的时间异质性。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=0.75\textwidth]{sehp}
+  \caption{SEHP模型和RPP在刻画激励作用时的差异\citep{bao2015modeling}}
   \label{fig:sehp}
 \end{figure}
-在该工作的基础上，作者还提出了ISEHP模型\citep{bao2016modeling}，进一步考虑了不同转发用户带来的激励强度的差异以及微博平台上的时间异质性。
 
 Zhao等人\citep{zhao2015seismic}研究了社交网络中消息爆发预测的问题。作者将爆发预测问题形式化为消息最终流行度的预测问题。作者同样采用了自激励Hawkes过程来建模消息流行度的转发过程。在建模用户激励强度时，作者引入了用户粉丝数，同时还将消息本身的感染力也建模成一个随机过程。最终作者给出流行度增长过程的强度函数如下：
 \begin{equation}
@@ -154,50 +155,47 @@ x(t)=p(t) \sum_{t_i<t}n_i \phi(t-t_i)\text{，}
 \end{equation}
 其中$p(t)$是用于刻画消息自身感染强度变化的随机过程，$n_i$是第$i$转发的用户的粉丝数，$\phi(t-t_i)$用于刻画感染强度随时间的变化关系。作者在论文中还指出，感染强度$p(t)$的大小反映了消息当前所处的增长状态：令$n^{\ast}$表示所有用户的粉丝数的平均值。当$p(t)>1/n^{\ast}$时，消息处于``超临界"状态，此时消息的流行度处于指数增长阶段，无法对消息的最终流行度做出预测；当$p(t)<1/n^{\ast}$时，消息处于``次临界"状态，此时消息的流行度增长状态逐渐减缓，可以预测消息的最终流行度。
 
-在自增强泊松过程和自激励Hawkes过程在外，也有一部分工作采用了其他的随机过程来刻画流行度的增长情况。Lerman等人\citep{lerman2010using}研究了Digg网站上故事的得票数的变化情况。分析发现，故事在网站中的曝光度、故事本身的内容吸引力以及用户间的社会关系对故事最终的得票数有很大的影响。作者将这三个因素建模到故事得票数增长模型中，得到了很好的预测效果。Costa等人\citep{ferraz2015rsc}分别使用了使用泊松过程（Poisson process）\citep{kingman1993poisson}和自相关过程（Self-correlated process）来建模了消息的转发时间间隔的产生过程。Yang等人\citep{yang2013mixture}采用了多元Hawkes过程来建模多条消息的转发情况。Rizoiu等人\citep{rizoiu2017expecting}提出了Hawkes强度过程（Hawkes intensity process，HIP）来建模流行度时间序列的产生过程。Yu等人\citep{yu2015micro}研究了微博平台中消息的微观转发过程，并直接使用了生存分析理论来建模平台中用户发布的消息被自己的粉丝转发的概率。
+在自增强泊松过程和自激励Hawkes过程以外，也有一部分工作采用了其他的随机过程来刻画流行度的增长情况。Lerman等人\citep{lerman2010using}研究了Digg网站上故事的得票数的变化情况。分析发现，故事在网站中的曝光度、故事本身的内容吸引力以及用户间的社会关系对故事最终的得票数有很大的影响。作者将这三个因素建模到故事得票数增长模型中，得到了很好的预测效果。Costa等人\citep{ferraz2015rsc}分别使用了使用泊松过程（Poisson process）\citep{kingman1993poisson}和自相关过程（Self-correlated process）来建模了消息的转发时间间隔的产生过程。Yang等人\citep{yang2013mixture}采用了多元Hawkes过程来建模多条消息的转发情况。Rizoiu等人\citep{rizoiu2017expecting}提出了Hawkes强度过程（Hawkes intensity process，HIP）来建模流行度时间序列的产生过程。Yu等人\citep{yu2015micro}研究了微博平台中消息的微观转发过程，并直接使用了生存分析理论来建模平台中用户发布的消息被自己的粉丝转发的概率。
 
 纵观上述方法，基于随机过程的方法能够较好地刻画流行度的到达过程，但是由于是非监督学习的方法，它们的预测能力有限；同时流行度增长的强度函数的设计，很大程度上也依赖于研究人员的先验知识；另外，这类方法在建模过程中只利用了待预测消息自身的信息，没有显式地利用海量的历史消息来辅助提升预测性能。
 
 \subsection{基于表示学习的方法}
-表示学习目前已经发展成为一个重要的领域，在很多实际问题中都有着重要的应用。在流行度预测领域，Bourigault等人\citep{bourigault2014learning}通过学习用户表示来预测消息的传播过程。作者将消息的传播过程类比为一个热传导的过程：消息的发布者作为``热源"，距离用户越近的用户，会越早地参与到热传导中来。因此，作者将所有的用户都嵌入到一个隐空间中，用户参与消息转发的先后顺序由用户与消息源发用户在隐空间中的距离决定，如图\ref{fig:heat}所示。借助排序的框架，作者根据数据集中用户参与转发的先后顺序，学习到所有用户的表达，并根据当前的转发情况，对接下来参与转发的的用户进行预测。Liu等人\citep{liu2016learning}在该工作的基础上，考虑了用户作为发布者和转发者的区别，为每个用户分别学习了影响力表达和易感性表达，并对用户参与转发的先后顺序的差异做了进一步约束。此外，Bourigault等人\citep{bourigault2016representation}还在独立级联模型\citep{goldenberg2001talk}中引入用户表示学习，来建模消息的转发过程。
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
-  \label{fig:heat}
-\end{figure}
+表示学习目前已经发展成为一个重要的领域，在很多实际问题中都有着重要的应用。在流行度预测领域，Bourigault等人\citep{bourigault2014learning}通过学习用户表示来预测消息的传播过程。作者将消息的传播过程类比为一个热传导的过程：消息的发布者作为``热源"，距离用户越近的用户，会越早地参与到热传导中来。因此，作者将所有的用户都嵌入到一个隐空间中，用户参与消息转发的先后顺序由用户与消息源发用户在隐空间中的距离决定。借助排序的框架，作者根据数据集中用户参与转发的先后顺序，学习得到所有用户的表达，并根据当前的转发情况，对接下来参与转发的的用户进行预测。Liu等人\citep{liu2016learning}在该工作的基础上，考虑了用户作为发布者和转发者的区别，为每个用户分别学习了影响力表达和易感性表达，并进一步建模了用户参与转发的先后顺序上的差异。此外，Bourigault等人\citep{bourigault2016representation}还在独立级联模型\citep{goldenberg2001talk}中引入用户表示学习，来建模消息的转发过程。
 
-在深度学习领域，以循环神经网络（Recurrent neural network，RNN）\citep{mikolov2010recurrent}和带长短时记忆单元（Long-short term memory，LSTM）\citep{hochreiter1997long}以及门控循环单元（Gated recurrent unit，GRU）\citep{cho2014learning}的循环神经网络为代表的模型在语音识别、文本生成等一系列序列建模领域都取得了突破性的成果。流行度的增长过程本身也是一个转发事件序列不断生长的过程，因此，这类序列建模的方法也可以用来建模流行度序列的增长过程。Du等人\citep{du2016recurrent}在建模带标记的事件序列时，在随机点过程的框架下，用RNN网络来建模事件序列的强度函数。作者在论文中指出，传统的基于随机过程的方法都需要人工去定义强度函数的形式，而人工定义的函数形式与真正的强度函数可能相去甚远，导致模型的预测能力下降。因此，作者使用了RNN网络来建模传播过程中强度函数的变化，模型的整体结构如图\ref{fig:rmtpp}所示。该模型以事件发生时刻和事件类型作为输入，利用RNN网络来学习历史事件集合的表达，在历史事件表达的基础上计算得到事件的累积强度函数，并对下一次事件的发生时刻和类型做出预测。Wang等人\citep{wang2017marked}在该工作的基础上，引入了事件发生时刻和事件类型之间的依赖关系，进一步提升了模型的预测效果。Xiao等人\citep{xiao2017modeling}也采用了RNN网络来建模事件的强度函数。在建模过程中，作者将强度函数分解成历史事件激励和事件固有的传播能力两部分，分别使用了两个RNN网络来建模事件的时刻序列和流行度时间序列，再将两个RNN网络的结果融合得到事件强度的表示。
+在深度学习领域，以循环神经网络（Recurrent neural network，RNN）\citep{mikolov2010recurrent}和带长短时记忆单元（Long-short term memory，LSTM）\citep{hochreiter1997long}以及门控循环单元（Gated recurrent unit，GRU）\citep{cho2014learning}的循环神经网络为代表的模型在语音识别、文本生成等一系列序列建模领域都取得了突破性的成果。流行度的增长过程本身也是一个转发事件序列不断生长的过程，因此，这类序列建模的方法也可以用来建模流行度序列的增长过程。Du等人\citep{du2016recurrent}在建模带标记的事件序列时，在随机点过程的框架下，用RNN网络来建模事件序列的强度函数。作者在论文中指出，传统的基于随机过程的方法都需要人工去定义强度函数的形式，而人工定义的函数形式与真正的强度函数可能相去甚远，导致模型的预测能力下降。
+因此，作者提出了RMTPP模型，使用RNN网络来建模传播过程中强度函数的变化，模型的整体结构如图\ref{fig:rmtpp}所示。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=0.5\textwidth]{rmtpp}
+  \caption{RMTPP模型的结构示意图\citep{du2016recurrent}}
   \label{fig:rmtpp}
+\end{figure}
+该模型以事件发生时刻和事件类型作为输入，利用RNN网络来学习历史事件集合的表达，在历史事件表达的基础上计算得到事件的累积强度函数，并对下一次事件的发生时刻和类型做出预测。
+Wang等人\citep{wang2017marked}在该工作的基础上，引入了事件发生时刻和事件类型之间的依赖关系，进一步提升了模型的预测效果。Xiao等人\citep{xiao2017modeling}也采用了RNN网络来建模消息的强度函数。在建模过程中，作者将强度函数分解成历史转发激励和消息固有的传播能力两部分，分别使用了两个RNN网络来建模消息的转发时刻序列和流行度时间序列，再将两个RNN网络的结果融合得到消息传播强度的表示。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{crossDependence}
+  \caption{消息传播过程中的跳跃依赖现象\citep{wang2017cascade}}
+  \label{fig:crossDependence}
 \end{figure}
 
 尽管以RNN网络为代表的模型在流行度建模领域取得了一定的成果，Wang等人\citep{wang2017cascade}在论文中指出：RNN网络可以建模序列中的顺序依赖关系，但是很难处理消息转发过程中存在的``跳跃依赖"。消息转发过程中的跳跃依赖如图\ref{fig:crossDependence}所示。在图示的转发过程中，用户$u_3$的行为只依赖于$u_1$，而不依赖与$u_2$；同理用于$u_4$的转发行为依赖于$\{u_1,u_2\}$，而不依赖于$u_3$。传统的RNN网络无法建模这类跳跃依赖问题。因此，作者在RNN网络中的基础上，引入了关注机制\citep{bahdanau2014neural}来学习传播过程中更精确的依赖关系。
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
-  \label{fig:crossDependence}
-\end{figure}
 
 除上述基于用户表示学习的模型和深度序列模型外，还存在一部分基于深度模型的``端到端"的流行度预测方法。Li等人\citep{li2017deepcas}提出了DeepCas模型在对消息的流行度进行预测。DeepCas模型从消息的转发树结构出发，利用随机游走\citep{spitzer2013principles}的方式从转发树中采样得到若干转发序列；再利用带GRU单元的双向RNN网络学习得到转发序列的表达；再利用权重机制将这些序列的表达融合得到消息的表达；最后利用一个多层神经网络来学习消息的表达和消息的流行度之间的变换关系。DeepCas模型的整体结构如图\ref{fig:deepCas}所示。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=1\textwidth]{deepCas}
+  \caption{DeepCas模型结构示意图\citep{li2017deepcas}}
   \label{fig:deepCas}
+\end{figure}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.4\textwidth]{deepHawkes}
+  \caption{DeepHawkes模型结构示意图\citep{cao2017deep}}
+  \label{fig:deepHawkes}
 \end{figure}
 
 Cao等人\citep{cao2017deep}从自激励Hawkes过程中受到启发，将影响消息流行度的三个关键因素：用户影响力、每次转发带来的激励效应以及激励的时间衰减效应分别用深度模型来建模，提出了DeepHawkes模型。DeepHawkes模型也是从消息的转发树出发，抽取出消息转发树中的所有路径，再利用深度序列模型对所有的路径进行建模，最后根据每条路径中尾节点的参与时间对路径的表达进行加权，得到消息的最终表达。消息的表达与消息的流行度之间的变换函数是通过一个全连接的神经网络学习得到。DeepHawkes模型的整体结构如图\ref{fig:deepHawkes}所示。
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
-  \label{fig:deepHawkes}
-\end{figure}
 
 \subsection{其他方法}
 在上述三类方法外，还有一些工作从不同的角度来尝试对消息的流行度做出更精确的预测。Mishra等人\citep{mishra2016feature}提出了一种结合特征类方法和随机过程类方法的模型。作者先利用自激励Hawkes过程学习得到消息自身的吸引力、转发用户的影响力以及时间衰减效应的参数，然后将这三部分因素作为特征，与人工提取的特征一起，利用监督学习的框架，来预测消息最终的流行度。实验结果表明，作者提出的模型的预测效果要明显优于特征类方法和随机过程类方法的效果。Xiao等人\citep{xiao2016modeling}同样从融合特征类方法和随机过程类方法的角度，提出了一种新方法来预测论文的引用数。作者在自激励Hawkes过程的框架下，将论文自身的吸引力用一系列人工提取的特征来表示，对应的强度函数如下：
@@ -207,13 +205,13 @@ x(t)=[\boldsymbol{\beta} \boldsymbol{\psi}(t)]e^{-w_1 t}+\alpha \sum_{t_i<t}e^{-
 \end{equation}
 对比公式（\ref{eq:hawkesIntensity}），可以看到用于表示论文自身吸引力的变量由$[\boldsymbol{\beta} \boldsymbol{\psi}(t)]$替代，其中$\boldsymbol{\psi}(t)$是人工提取的指示特征向量，$\boldsymbol{\beta}$是待学习的相关系数向量。数据集上的结果表明，融合后的模型比随机过程类方法有这更好的预测效果。
 
-另一部分工作从分组的角度来考虑流行度预测问题。Cao等人\citep{cao2017predicting}按照观测窗口内的累积流行度，将消息分到不同的组中；再分别用每个组别的数据去训练S-H模型发现不同组别学习得到的S-H模型的参数存在很大的差异性，说明了分组的必要性。Ouyang等人\citep{ouyang2016peek}在预测在线视频的流行度时，也采用了分组预测的思想。作者将视频流行度预测问题分解为两个预测任务：预测视频最终流行度的级别以及预测视频最终流行度的数值。作者先提取了一些列的特征，来预测视频最终流行度的级别；再根据视频$v$在观测窗口的流行度级别$L_v(i)$和预测得到的最终流行度级别$L_v(r)$，分别利用不同的模型来预测视频最终的流行度：若$L_v(i)=L_v(r)$，说明视频最终流行度级别与观测窗口内的流行度级别相同，这种情况视频最终的流行度由观测窗口内的流行度变化趋势来决定，因而采用了Pinto模型\citep{pinto2013using}来预测；若$L_v(i)<L_v(r)$，说明视频最终的流行度得到了较大的提升，这种情况下作者采用了S-H模型来进行预测。预测方法的整体框架如图\ref{fig:group}所示。除消息分组的思想外，Hoang等人\citep{hoang2017gpop}还提出了基于用户分组的流行度预测方法。作者在论文中指出，现有的流行度预测方发主要从两个层面开展：用户层面，预测单个用户是否会参与转发；群体层面，预测最终会参与转发的用户总数。但用户层面的预测模型常常受到数据稀疏性的影响，而群体层面的预测模型又忽略了用户层面的特征。因此，作者提出一个基于用户分组的流行度预测方法。作者先根据用户所处的社交网络的结构和历史上参与消息转发的情况，将用户划分为不同的用户组；再将同一个组中用户的转发数据合并，得到用户组级别的转发数据；最后在合并后的``消息-用户-时间"数据上，利用张量填充\citep{Kolda2009TDA}的方式对待预测消息的流行度做出预测。
+另一部分工作从分组的角度来考虑流行度预测问题。Cao等人\citep{cao2017predicting}按照观测窗口内的累积流行度，将消息分到不同的组中；再分别用每个组别的数据去训练S-H模型发现不同组别学习得到的S-H模型的参数存在很大的差异性，说明了分组的必要性。Ouyang等人\citep{ouyang2016peek}在预测在线视频的流行度时，也采用了分组预测的思想。
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.45\textwidth]{ITC_Q_Criteria}
-  \caption{Q判据等值面图}
+  \includegraphics[width=0.45\textwidth]{peek}
+  \caption{Ouyang等人提出的基于消息分组的流行度预测模型\citep{ouyang2016peek}}
   \label{fig:group}
-\end{figure}
+\end{figure}作者将视频流行度预测问题分解为两个预测任务：预测视频最终流行度的级别以及预测视频最终流行度的数值。作者先提取了一些列的特征，来预测视频最终流行度的级别；再根据视频$v$在观测窗口的流行度级别$L_v(i)$和预测得到的最终流行度级别$L_v(r)$，分别利用不同的模型来预测视频最终的流行度：若$L_v(i)=L_v(r)$，说明视频最终流行度级别与观测窗口内的流行度级别相同，这种情况视频最终的流行度由观测窗口内的流行度变化趋势来决定，因而采用了Pinto模型\citep{pinto2013using}来预测；若$L_v(i)<L_v(r)$，说明视频最终的流行度得到了较大的提升，这种情况下作者采用了S-H模型来进行预测。预测方法的整体框架如图\ref{fig:group}所示。除消息分组的思想外，Hoang等人\citep{hoang2017gpop}还提出了基于用户分组的流行度预测方法。作者在论文中指出，现有的流行度预测方发主要从两个层面开展：用户层面，预测单个用户是否会参与转发；群体层面，预测最终会参与转发的用户总数。但用户层面的预测模型常常受到数据稀疏性的影响，而群体层面的预测模型又忽略了用户层面的特征。因此，作者提出一个基于用户分组的流行度预测方法。作者先根据用户所处的社交网络的结构和历史上参与消息转发的情况，将用户划分为不同的用户组；再将同一个组中用户的转发数据合并，得到用户组级别的转发数据；最后在合并后的``消息-用户-时间"数据上，利用张量填充\citep{Kolda2009TDA}的方式对待预测消息的流行度做出预测。
 
 此外，还有部分工作考虑了传统过程中消息间的竞争与合作机制。Zarezade等人\citep{zarezade2017correlated}研究了Twitter平台上不同消息的传播情况，发现同时在传播的消息之间存在着竞争和合作的现象：处于竞争状态的消息的流行度呈现出此消彼长的变化趋势，而处于合作状态的消息的流行度则呈现出同步变化的趋势，如图\ref{fig:cooperate}所示。作者基于自激励Hawkes过程，引入消息间的竞争合作机制，较好地捕获了处于不同状态的消息的流行度的变化趋势。Samanta等人\citep{samantalmpp}同样在自激励Hawkes过程中引入了合作竞争机制来刻画Twitter平台上不同话题标签的流行度的变化情况。在考虑话题标签间的竞争机制时，作者引入了排序的思想，来对消息的强度函数进行约束。
 \begin{figure}[!htbp]

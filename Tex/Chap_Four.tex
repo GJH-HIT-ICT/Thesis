@@ -1,0 +1,36 @@
+\chapter{面向多中心用户的流行度预测方法}
+\label{chap:four}
+\section{引言}
+\begin{eqnarray}
+\label{eq:gradLambda}
+\begin{split}
+\frac{\partial lnL}{\partial \lambda_l} & = \sum_{i=1}^{n}\frac{f(t_i-t_l)}{\sum_{k=1}^{l} \lambda_k f(t_i-t_k)} + \sum_{i=1}^{n} \int_{0}^{t_i}f(t-t_l)dt - (m+n)\int_{0}^{T}f(t-t_l)dt
+\end{split}
+\end{eqnarray}
+
+\begin{eqnarray}
+\label{eq:gradMu}
+\begin{split}
+\frac{\partial lnL}{\partial \mu_l} & = \frac{1}{\sigma_l} \cdot \frac{ln(t_i-t_l)-\mu_l}{\sigma_l} \cdot \sum_{i=1}^{n}\frac{\lambda_l f(t_i-t_l)}{\sum_{k=1}^{l} \lambda_k f(t_i-t_k)} \\
+& - \frac{1}{\sigma_l} \cdot\lambda_l \sum_{i=1}^{n} \phi(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l}) \\
+& + \frac{1}{\sigma_l}\cdot (m+n)\lambda_l \phi(\frac{ln(T-t_l)-\mu_l}{\sigma_l})
+\end{split}
+\end{eqnarray}
+
+\begin{eqnarray}
+\label{eq:gradSigma}
+\begin{split}
+\frac{\partial lnL}{\partial \sigma_l} & = \frac{1}{\sigma_l} \cdot \sum_{i=1}^{n}\{\frac{\lambda_l f(t_i-t_l)}{\sum_{k=1}^{l} \lambda_k f(t_i-t_k)}[(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l})^2-1]\} \\
+& -\frac{1}{\sigma_l} \cdot \lambda_l\sum_{i=1}^{n}\{\phi(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l}) \cdot \frac{ln(t_i-t_l)-\mu_l}{\sigma_l}\} \\
+& + \frac{1}{\sigma_l} \cdot (m+n)\lambda_l \phi(\frac{ln(T-t_l)-\mu_l}{\sigma_l}) \cdot \frac{ln(T-t_l)-\mu_l}{\sigma_l}
+\end{split}
+\end{eqnarray}
+
+\begin{eqnarray}
+\label{eq:gradT}
+\begin{split}
+\frac{\partial lnL}{\partial t_l} &= \frac{1}{t_i-t_l} \cdot \sum_{i=1}^{n}\{ \frac{\lambda_l f(t_i-t_l)}{\sum_{k=1}^l\lambda_kf(t_i-t_k)}(1+\frac{ln(t_i-t_l)-\mu_l}{\sigma_l^2}) \} \\
+& -\frac{1}{\sigma_l} \cdot \frac{1}{t_i-t_l}\cdot \lambda_l\sum_{i=1}^{n} \phi(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l}) \\
+& +\frac{1}{\sigma_l}\cdot \frac{1}{T-t_l}\cdot (m+n)\lambda_l\phi(\frac{ln(T-t_l)-\mu_l}{\sigma_l})
+\end{split}
+\end{eqnarray}

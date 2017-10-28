@@ -24,6 +24,70 @@
 
 在本章中，我们提出了一种基于RPP模型叠加的方法来刻画去中心化的传播过程。我们使用RPP模型来建模每个传播子过程，再将所有的传播子过程叠加，得到整体传播过程的建模。与基于自增强泊松过程的模型相比，我们的模型能够很好地捕获传播过程去中心化的特点，同时也区分了中心用户与其他转发用户带来的激励作用的差异；与基于自激励Hawkes过程的模型相比，我们的模型只需要学习中心用户的参数，大大减少了待学习的参数个数。
 
+\section{数据分析}
+我们在新浪微博上随机抓取了200条消息的完整转发数据，包括了转发用户、转发时间以及详细的转发路径数据，用于分析微博中的去中心化传播现象。我们从中随机挑选了几条消息的转发路径图，如图\ref{fig:diffusionTree}所示。图中的每一个点表示一条消息，消息之间的有向连边表示转发关系。我们将消息转发树中的第一个节点称为源发消息，其余节点称为转发消息。图\ref{fig:exampleD}展示是典型的中心型结构，所有消息基本上都是对源发消息的直接转发；图\ref{fig:exampleB}也是中心型的传播结构，只是部分传播链会比较长，但是没有其他消息得到大量的转发；图\ref{fig:exampleA}和图\ref{fig:exampleC}则展示了典型的去中心化结构。除源发信息外，部分转发消息本身也吸引了大量的传播，从而形成了一种多中心的传播结构。这种多中心的传播结构，目前还缺乏有效的建模方法，也是本章的建模目标。
+\begin{figure}[!htb]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{4-exampleA}
+    \caption{}
+    \label{fig:exampleA}
+  \end{subfigure}%
+  \hspace{0.05\textwidth}
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{4-exampleB}
+    \caption{}
+    \label{fig:exampleB}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{4-exampleC}
+    \caption{}
+    \label{fig:exampleC}
+  \end{subfigure}%
+  \hspace{0.05\textwidth}
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{4-exampleD}
+    \caption{}
+    \label{fig:exampleD}
+  \end{subfigure}
+  \caption{新浪微博中消息转发树示例}
+  \label{fig:diffusionTree}
+\end{figure}
+
+为了进一步衡量微博中去中心化传播现象的比例，我们抓取了新浪微博中某一天所有的源发消息，以及这些源发消息在发布后24小时内的转发数据作为我们的实验数据。为了保证后续实验的效果，我们对数据进行了进一步的过滤。我们过滤了在发布1小时后累计转发数小于10的消息。最终我们的数据集中包含了近6.5万条源发消息以及它们的转发数据。
+
+我们首先对源发消息的转发数据进行了统计。对于每一条源发消息，我们统计了它自身被直接转发的次数占总转发次数的比例，结果如图\ref{fig:rootRatioA}所示。图中横坐标是源发消息被直接转发的次数占消息最终总转发次数的比例，而纵坐标是转发比例小于等于对应横坐标比例的源发消息的累积分布。从图\ref{fig:rootRatioA}中可以看出，有接近20\%的消息的直接转发占总转发数的比例低于50\%，而接近50\%的消息的直接转发占总转发数的比例低于80\%，这说明直接将微博中的消息转发行为建模成单源传播是不合理的。为了消息低转发数消息对统计结果的影响，我们从数据集中剔除了最终转发数小于100的消息，并对剔除这些消息后得到的数据集进行统计，得到的统计结果如图\ref{fig:rootRatioB}所示。从图中可以看出，对于高转发数的消息来说，同样存在一定比例的源发消息，它们的直接转发占比比较低。
+\begin{figure}[!htbp]
+  \centering
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[width=\textwidth]{4-rootRatio}
+    \caption{}
+    \label{fig:rootRatioA}
+  \end{subfigure}%
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[width=\textwidth]{4-rootRatioH}
+    \caption{}
+    \label{fig:rootRatioB}
+  \end{subfigure}
+  \caption{新浪微博中消息转发树示例}
+  \label{fig:rootRatio}
+\end{figure}
+
+进一步地，我们统计了每条源发消息的转发消息引起的转发情况。对于每一条源发消息，我们搜集了它的所有的直接转发消息，统计了这些直接转发消息带来的转发数，并选取了这些直接转发消息中带来转发数最多的直接转发消息。我们统计了所选取的直接转发消息的转发数占源发消息总转发数的比例，得到的累积分布如图\ref{fig:burstRationH}所示。这里我们展示的是在剔除低转发数消息之后的数据集上的统计结果。从图中可以看出，有10\%的源发消息的直接转发消息带来的转发数占总转发数的比例超过了50\%，有20\%的源发消息的直接转发消息带来的转发数占总转发数的比例超过了30\%。这些统计结果说明，消息在传播过程中，除源发消息外还会出现少量引起大量转发的中间转发消息，对这些中间转发消息引起的转发情况的建模，是刻画去中心化传播过程的关键。
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{4-burstRatioH}
+  \caption{源发消息的转发消息引起的转发数的占比情况}
+  \label{fig:burstRationH}
+\end{figure}
+
+综上所述，通过对数据集中消息的转发情况的分析，我们可以看出，去中心化的传播结构在消息传播过程中比较普遍，因此，我们需要一种模型来刻画去中心化的传播过程。进一步对各层转发消息的转发数据进行统计后发现，部分源发消息带来的直接转发数占比比较低，而部分转发消息则会带来很高的转发量。因此，刻画这些转发消息所引发的转发过程，是刻画去中心化传播过程的关键。
+
+\section{模型}
+\subsection{问题形式化}
+\subsection{预备知识}
+\subsection{面向多中心用户的流行度到达过程建模}
+\subsection{优化}
 
 \begin{eqnarray}
 \label{eq:gradLambda}

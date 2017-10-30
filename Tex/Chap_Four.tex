@@ -85,42 +85,94 @@
 
 \section{模型}
 \subsection{问题形式化}
-给定一条消息$m$在观测时间窗口$[0,T]$内的转发时间戳序列$C^m=\{t_i^m|t_i^m<T,i=0,1,2,...,n_m\}$，其中$n_m$在消息$m$观测时间窗口内的转发次数，$t_i^m$是消息$m$的发布时间与第$i$次转发的时间的间隔，且满足$0=t_0^m \le t_1^m \le t_2^m \le...\le t_{n_i}^m \le T$。我们的目标是预测消息$m$在后续任意时刻$t$的转发数。
+给定一条消息$d$在观测时间窗口$[0,T]$内的转发时间戳序列$C^d=\{t_i^d|t_i^d<T,i=0,1,2,...,n_d\}$，其中$n_d$在消息$d$观测时间窗口内的转发次数，$t_i^d$是消息$d$的发布时间与第$i$次转发的时间的间隔，且满足$0=t_0^d \le t_1^d \le t_2^d \le...\le t_{n_i}^d \le T$。我们的目标是预测消息$d$在后续任意时刻$t$的转发数。
 
 \subsection{RPP模型}
-\subsection{面向多中心用户的流行度到达过程建模}
-\subsection{优化}
+RPP模型是由Shen等人提出并被用于建模论文引用数的到达过程，它是一个基于随机过程的模型。关于基于随机过程的模型的相关知识，可以参考本论文的第二章相关研究综述中的相关内容。RPP模型在建模论文的引用达到过程时，重点考虑了3个影响论文引用数的因素：首先是论文本身的质量因素。论文的质量越高，论文的最终引用数会越高，而且引用数增长的速度也越快。第二个因素是时间衰减效应。类似于信息传播中的爆发衰减现象，论文引用数的增长也同样会存在爆发阶段和衰减阶段，需要利用一个时间函数来刻画论文的引用增长速度随时间的变化过程。最后一个因素是论文引用中的``富者愈富"机制\citep{jeong2003measuring,wang2008measuring}。在论文引用过程中，引用数越高的论文，越有机会获得更多新的引用。Shen等人使用了乘性模型来融合上述3个因素，最终给出了如下的论文引用强度函数：
+\begin{equation}
+\label{eq:rppDiff}
+\frac{dc(t)}{dt}=x(t)=\lambda f(t;\theta) I(t)\text{，}
+\end{equation}
+其中$c(t)$是到$t$时刻论文的总引用数。$\lambda$用于度量论文的质量；$f(t;\theta)$用于刻画时间衰减效应，$\theta$是对应的参数。在RPP模型中，作者选用的时间衰减效应函数是Log-normal函数；$I(t)$用于刻画论文累积引用数带来的``富者愈富"影响。在RPP模型中，$I(t)$函数的值就是到$t$时刻为止论文的累积引用数，即$I(t)=m+c(t)$，其中$m$是作者引入的论文引用数的先验。在给定强度函数后，就可以利用极大似然框架来求取相应的参数。类似于前面定义的时间戳序列，论文引用序列也可以用$\{t_0,t_1,t_2,...,t_N\}$表示，其中$t_i$是第$i$引用的到达时刻与论文发表时刻的时间间隔，$N$是论文的总引用次数。利用第二章相关工作综述中介绍的生存理论分析框架，论文引用序列的似然函数可以表示为：
+\begin{equation}
+L(\lambda,\theta)=p_0(T|t_N)\prod_{i=1}^{N}p_1(t_i|t_{i-1})\text{，}
+\end{equation}
+其中$p_0(T|t_N)$表示时间区间$(t_N, T]$内没有新的引用到达的概率。在生存理论分析框架中，给定强度函数$x(t)$后，时间区间$(t_N, T]$内没有新的引用到达的概率可以用生存概率建模如下：
+\begin{equation}
+p_0(T|t_N)=e^{-\int_{t_N}^{T}x(t_N)dt}=e^{-\int_{t_N}^{T}\lambda f(t;\theta) I(t_N)dt}\text{；}
+\end{equation}
+$p_1(t_i|t_{i-1})$表示了在给定前一次引用发生在$t_{i-1}$时刻的情况下，下一次引用发生在$t_i$时刻的概率密度。在生存理论分析框架中，这个概率密度为：
+\begin{equation}
+p_1(t_i|t_{i-1})=x(t_{i-1})e^{-\int_{t_{i-1}}^{t_i}x(t_{i-1})dt}=\lambda f(t;\theta) I(t_{i-1})e^{-\int_{t_{i-1}}^{t_i}\lambda f(t;\theta) I(t_{i-1})dt}\text{。}
+\end{equation}
+给定上述定义后，结合观测数据，就可以利用极大似然框架来推断强度函数中的相应参数，进而对论文引用数的后续变化进行预测。假设估计得到的参数为$\{\lambda^{\ast},\theta^{\ast}\}$，通过求解微分方程（\ref{eq:rppDiff}），并结合边界条件$c(T)=N$，论文在$t$时刻的引用数可以用如下函数预测：
+\begin{equation}
+c(t)=(m+N)e^{\lambda^{\ast}\int_{T}^{t}f(t;\theta^{\ast})dt}-m\text{。}
+\end{equation}
 
+RPP模型在预测论文引用数变化时，取得了非常好的效果。但是论文引用场景更像是一个单源传播的场景，而消息传播则呈现出明显的多中心结构。因此，本章提出了一种面向多中心用户的流行度到达过程建模方法。
+\subsection{面向多中心用户的流行度到达过程建模}
+通过数据分析，我们发现，去中心化的传播过程可以拆分为几个基于中心用户的单源传播过程，而每个单源传播过程又可以用RPP模型很好地建模。因此，我们提出一种叠加RPP模型来建模消息传播过程的方法。我们将消息整体的传播过程拆分为$K$个子传播过程，其中$K$是一个超参，用于控制传播过程中中心用户的个数，它的影响会在实验部分进行讨论。对于第$l$个子过程，我们用参数$\{\lambda_l,\theta_l,\tau_l\}$来刻画，其中$\lambda_l$表示第$l$个子过程的中心用户带来的激励大小，类似于RPP模型中的论文质量因素；$\theta_l$是第$l$个子过程的时间衰减效应函数的参数。我们认为每个子过程的衰减程度和速度是互相独立的；$\tau_l$表示第$l$个子过程的开始时间，用作计算每个子过程的时间衰减效应的偏移量。给定上述参数的情况下，我们定义的强度函数如下：
+\begin{equation}
+x(t)=\sum_{l=1}^{K}\lambda_l f(t-\tau_l;\theta_l)I(t)\text{，}
+\end{equation}
+其中，对于时间衰减效应函数$f(t)$和``富者愈富"机制$I(t)$，我们选用了和RPP模型相同的函数。给定上述强度函数和参数集合$\{\pmb{\lambda},\pmb{\theta},\pmb{\tau}\}$后，我们的模型对前述时间戳序列$C^d$的似然表示如下：
+\begin{eqnarray}
+\label{eq:mixrppLikelihood}
+\begin{split}
+L(\pmb{\lambda},\pmb{\theta},\pmb{\tau}) & =p_0(T|t_N)\prod_{i=1}^{N}p_1(t_i|t_{i-1}) \\
+& = (\prod_{i=1}^{n_d}(m+i-1))\ast (\sum_{l=1}^{K}\{\lambda_l f(t_i-\tau_l;\theta_l)\}) \\
+& \ast e^{(m+n)\int_{0}^{T}\sum_{l=1}^{K}\lambda_l f(t-\tau_l;\theta_l)dt-\sum_{i=1}^{n_d}\int_{0}^{t_i}\sum_{l=1}^{K}\lambda_l f(t-\tau_l;\theta_l)dt}\text{。}
+\end{split}
+\end{eqnarray}
+利用上述似然函数，结合时间戳序列数据，我们就可以求出参数$\{\pmb{\lambda^{\ast}},\pmb{\theta^{\ast}},\pmb{\tau^{\ast}}\}$，进而利用下述预测函数对消息的后续流行度进行预测：
+\begin{equation}
+c(t)=(m+n_d)e^{\int_{T}^{t}\sum_{l=1}^{K}\lambda_l^{\ast}f(s-\tau_l^{\ast};\theta_l^{\ast})ds}-m\text{。}
+\end{equation}
+
+比较我们模型的强度函数和RPP模型的强度函数，可以发现，我们的模型通过叠加RPP模型的方式，建模了多中心用户的去中心化传播过程，改进了了RPP模型的单源传播假设；同时我们的模型还分别对每个中心用户带来的激励作用进行了区分。比较我们模型的强度函数和基于自激励Hawkes过程的模型的强度函数，我们的模型只建模了中心用户的激励，避免了基于自激励Hawkes过程的模型存在的参数多导致学习困难的问题。
+
+\subsection{优化}
+我们采用了梯度下降的方式来优化似然函数（\ref{eq:mixrppLikelihood}）。我们先对似然函数取对数，得到：
+\begin{eqnarray}
+\label{eq:mixrppLogLikelihood}
+\begin{split}
+lnL & =\sum_{i=1}^{n_d}ln(m+i-1)+\sum_{i=1}^{n_d}ln(\sum_{l=1}^K\lambda_l f(t-\tau_l;\theta_l)) \\
+& - (m+n)\int_{0}^{T}\sum_{l=1}^{K}\lambda_l f(t-\tau_l;\theta_l)dt+\sum_{i=1}^{n_d}\int_{0}^{t_i}\sum_{l=1}^{K}\lambda_l f(t-\tau_l;\theta_l)dt\text{。}
+\end{split}
+\end{eqnarray}
+借助对数函数的单调性，我们可以直接优化对数似然（\ref{eq:mixrppLogLikelihood}）来求取最优参数。首先，我们需要求取对数似然函数关于各参数的梯度。在我们的模型中，参数包括$\{\lambda_l,\theta_l,\tau_l\}_{l=1}^{K}$。其中$\theta_l$是时间衰减效应函数的参数。我们模型选取的时间衰减效应函数是Log-normal函数$f(t;\mu,\sigma)=\frac{1}{t\sigma \sqrt{2\pi}}e^{-\frac{(lnt-\mu)^2}{2\sigma^2}}$，因此我们的模型的实际参数包括$\{\lambda_l,\mu_l,\sigma_l,\tau_l\}_{l=1}^{K}$。对数似然函数关于各参数的梯度如下：
 \begin{eqnarray}
 \label{eq:gradLambda}
 \begin{split}
-\frac{\partial lnL}{\partial \lambda_l} & = \sum_{i=1}^{n}\frac{f(t_i-t_l)}{\sum_{k=1}^{l} \lambda_k f(t_i-t_k)} + \sum_{i=1}^{n} \int_{0}^{t_i}f(t-t_l)dt - (m+n)\int_{0}^{T}f(t-t_l)dt
+\frac{\partial lnL}{\partial \lambda_l} & = \sum_{i=1}^{n}\frac{f_l(t_i)}{\sum_{k=1}^{K} \lambda_k f_k(t_i)} + \sum_{i=1}^{n} \int_{0}^{t_i}f_l(t)dt - (m+n)\int_{0}^{T}f_l(t)dt\text{；}
 \end{split}
 \end{eqnarray}
 
 \begin{eqnarray}
 \label{eq:gradMu}
 \begin{split}
-\frac{\partial lnL}{\partial \mu_l} & = \frac{1}{\sigma_l} \cdot \frac{ln(t_i-t_l)-\mu_l}{\sigma_l} \cdot \sum_{i=1}^{n}\frac{\lambda_l f(t_i-t_l)}{\sum_{k=1}^{l} \lambda_k f(t_i-t_k)} \\
-& - \frac{1}{\sigma_l} \cdot\lambda_l \sum_{i=1}^{n} \phi(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l}) \\
-& + \frac{1}{\sigma_l}\cdot (m+n)\lambda_l \phi(\frac{ln(T-t_l)-\mu_l}{\sigma_l})
+\frac{\partial lnL}{\partial \mu_l} & = \frac{1}{\sigma_l} \cdot \frac{ln(t_i-\tau_l)-\mu_l}{\sigma_l} \cdot \sum_{i=1}^{n}\frac{\lambda_l f_l(t_i)}{\sum_{k=1}^{K} \lambda_k f_k(t_i)} \\
+& - \frac{1}{\sigma_l} \cdot\lambda_l \sum_{i=1}^{n} \phi(\frac{ln(t_i-\tau_l)-\mu_l}{\sigma_l}) \\
+& + \frac{1}{\sigma_l}\cdot (m+n)\lambda_l \phi(\frac{ln(T-\tau_l)-\mu_l}{\sigma_l})\text{；}
 \end{split}
 \end{eqnarray}
 
 \begin{eqnarray}
 \label{eq:gradSigma}
 \begin{split}
-\frac{\partial lnL}{\partial \sigma_l} & = \frac{1}{\sigma_l} \cdot \sum_{i=1}^{n}\{\frac{\lambda_l f(t_i-t_l)}{\sum_{k=1}^{l} \lambda_k f(t_i-t_k)}[(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l})^2-1]\} \\
-& -\frac{1}{\sigma_l} \cdot \lambda_l\sum_{i=1}^{n}\{\phi(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l}) \cdot \frac{ln(t_i-t_l)-\mu_l}{\sigma_l}\} \\
-& + \frac{1}{\sigma_l} \cdot (m+n)\lambda_l \phi(\frac{ln(T-t_l)-\mu_l}{\sigma_l}) \cdot \frac{ln(T-t_l)-\mu_l}{\sigma_l}
+\frac{\partial lnL}{\partial \sigma_l} & = \frac{1}{\sigma_l} \cdot \sum_{i=1}^{n}\{\frac{\lambda_l f_l(t_i)}{\sum_{k=1}^{K} \lambda_k f_k(t_i)}[(\frac{ln(t_i-\tau_l)-\mu_l}{\sigma_l})^2-1]\} \\
+& -\frac{1}{\sigma_l} \cdot \lambda_l\sum_{i=1}^{n}\{\phi(\frac{ln(t_i-\tau_l)-\mu_l}{\sigma_l}) \cdot \frac{ln(t_i-\tau_l)-\mu_l}{\sigma_l}\} \\
+& + \frac{1}{\sigma_l} \cdot (m+n)\lambda_l \phi(\frac{ln(T-\tau_l)-\mu_l}{\sigma_l}) \cdot \frac{ln(T-\tau_l)-\mu_l}{\sigma_l}\text{；}
 \end{split}
 \end{eqnarray}
 
 \begin{eqnarray}
 \label{eq:gradT}
 \begin{split}
-\frac{\partial lnL}{\partial t_l} &= \frac{1}{t_i-t_l} \cdot \sum_{i=1}^{n}\{ \frac{\lambda_l f(t_i-t_l)}{\sum_{k=1}^l\lambda_kf(t_i-t_k)}(1+\frac{ln(t_i-t_l)-\mu_l}{\sigma_l^2}) \} \\
-& -\frac{1}{\sigma_l} \cdot \frac{1}{t_i-t_l}\cdot \lambda_l\sum_{i=1}^{n} \phi(\frac{ln(t_i-t_l)-\mu_l}{\sigma_l}) \\
-& +\frac{1}{\sigma_l}\cdot \frac{1}{T-t_l}\cdot (m+n)\lambda_l\phi(\frac{ln(T-t_l)-\mu_l}{\sigma_l})
+\frac{\partial lnL}{\partial \tau_l} &= \frac{1}{t_i-\tau_l} \cdot \sum_{i=1}^{n}\{ \frac{\lambda_l f_l(t_i)}{\sum_{k=1}^{K}\lambda_k f_k(t_i)}(1+\frac{ln(t_i-\tau_l)-\mu_l}{\sigma_l^2}) \} \\
+& -\frac{1}{\sigma_l} \cdot \frac{1}{t_i-\tau_l}\cdot \lambda_l\sum_{i=1}^{n} \phi(\frac{ln(t_i-\tau_l)-\mu_l}{\sigma_l}) \\
+& +\frac{1}{\sigma_l}\cdot \frac{1}{T-\tau_l}\cdot (m+n)\lambda_l\phi(\frac{ln(T-\tau_l)-\mu_l}{\sigma_l})\text{。}
 \end{split}
 \end{eqnarray}
+其中，$f_l(t)$是一种缩写，表示使用第$l$个子过程的时间衰减效应函数，即$f_l(t) \equiv f(t-\tau_l;\mu_l,\sigma_l)$。

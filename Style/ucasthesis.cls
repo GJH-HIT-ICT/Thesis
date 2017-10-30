@@ -56,6 +56,8 @@
 \RequirePackage[usenames,dvipsnames,table]{xcolor}%
 %% math packages
 \RequirePackage{amsmath,amssymb,amstext}
+%% algorithm packages
+\RequirePackage{algorithm,algorithmic}
 %%%%% --------------------------------------------------------------------------------
 %%
 %%%%************************ Load Class Configuretion ********************************

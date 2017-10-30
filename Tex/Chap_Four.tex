@@ -175,4 +175,59 @@ lnL & =\sum_{i=1}^{n_d}ln(m+i-1)+\sum_{i=1}^{n_d}ln(\sum_{l=1}^K\lambda_l f(t-\t
 & +\frac{1}{\sigma_l}\cdot \frac{1}{T-\tau_l}\cdot (m+n)\lambda_l\phi(\frac{ln(T-\tau_l)-\mu_l}{\sigma_l})\text{。}
 \end{split}
 \end{eqnarray}
-其中，$f_l(t)$是一种缩写，表示使用第$l$个子过程的时间衰减效应函数，即$f_l(t) \equiv f(t-\tau_l;\mu_l,\sigma_l)$。
+其中，$f_l(t)$是一种缩写，表示使用第$l$个子过程的时间衰减效应函数，即$f_l(t) \equiv f(t-\tau_l;\mu_l,\sigma_l)$。另外，这里为了保持公式形式的简洁，我们省略了时间戳表示中的上标，即将$t_i^m$统一表示为$t_i$。
+
+在使用梯度下降进行参数更新时，学习率对于优化过程有着至关重要的影响。目前已经有大量的优化工作研究了学习率的设定问题，并提出了一系列自适应学习率的方法，包括Adam\citep{kingma2014adam}、Adadelta\citep{zeiler2012adadelta}、Adagrad\citep{duchi2011adaptive}以及RMSprop\citep{tieleman2012lecture}等。我们采用了Adadelta方法来自适应地调整参数的学习率。Adadelta方法会根据参数的历史梯度来自适应地调整学习率。在计算过程中，Adadelta方法会累积参数的历史梯度。用$g_t$来表示第$t$轮迭代中参数$\theta$的梯度。Adadelta算法会用如下公式来更新历史梯度的平方和：
+\begin{equation}
+\label{eq:adadelta1}
+E[g^2]_t=\rho E[g^2]_{t-1}+(1-\rho)g_t^2\text{，}
+\end{equation}
+其中$\rho$表示历史梯度的衰减率，计算中通常取值为0.95。在得出历史梯度的平方和后，我们可以用如下公式来计算参数$\theta$在第$t$轮的更新量：
+\begin{equation}
+\Delta\theta_t=-\frac{\eta}{\sqrt{E[g^2]_t+\epsilon}}\text{，}
+\end{equation}
+其中，$\eta$是事先预设的学习率，$\epsilon$是一个平滑项，通常取值为$10^{-6}$。可以看到，这里仍然需要设置全局的学习率。为此，Adadelta算法进一步统计了参数的历史更新量的平方和：
+\begin{equation}
+\label{eq:adadelta3}
+E[\Delta\theta^2]_t=\rho E[\Delta\theta^2]_{t-1}+(1-\rho)\Delta\theta_t^2\text{。}
+\end{equation}
+在统计了参数的历史更新量的平方和之后，新的更新公式如下：
+\begin{equation}
+\label{eq:adadelta2}
+\Delta\theta_t=-\frac{\sqrt{E[\Delta\theta^2]_{t-1}+\epsilon}}{\sqrt{E[g^2]_t+\epsilon}}g_t\text{，}
+\end{equation}
+这样参数的更新过程就可以自适应地调整学习率了。我们模型的参数学习的整体过程如算法\ref{alg:mixrppUpdate}所示。
+\begin{algorithm}  
+\caption{模型的参数学习算法}  
+\label{alg:mixrppUpdate}  
+\begin{algorithmic}[1]  
+	\REQUIRE ~~\\
+		时间戳序列$C^d$；\\
+		观测窗口长度$T$；\\
+		子过程个数$K$；\\
+		Adadelta方法的参数$\rho$；\\
+		Adadelta方法的参数$\epsilon$；\\
+		最大循环迭代次数$maxIter$；\\
+		迭代停止条件$stopping$；	
+	\ENSURE ~~\\
+		模型参数$\{\lambda_l,\mu_l,\sigma_l,\tau_l\}_{l=1}^K$。
+	\vspace{2ex}
+	\STATE 根据输入的参数$K$，初始化模型参数$\{\lambda_l,\mu_l,\sigma_l,\tau_l\}_{l=1}^K$；
+	\STATE 初始化Adadelta算法的中间变量$E[g^2]$和$E[\Delta\theta^2]$为0；
+	\STATE 根据公式（\ref{eq:mixrppLikelihood}）计算得到似然$oldLL$；
+	\FOR{i=1 \TO maxIter}
+		\STATE 根据公式（\ref{eq:gradLambda}--\ref{eq:gradT}）来计算各参数的梯度$g_i$；
+		\STATE 根据公式（\ref{eq:adadelta1}）更新各参数的历史梯度平方和$E[g^2]_i$；
+		\STATE 根据公式（\ref{eq:adadelta2}），利用$E[g^2]_i$和$E[\Delta\theta^2]_{i-1}$计算得到各参数的更新量$\Delta\theta_i$；
+		\STATE 根据公式（\ref{eq:adadelta3}）更新各参数的历史更新量的平方和$E[\Delta\theta^2]_i$；
+		\STATE 根据各参数的当前值和更新量$\Delta\theta_i$对各参数进行更新；
+		\STATE 根据公式（\ref{eq:mixrppLikelihood}）计算得到更新后的似然$newLL$；
+		\IF{$|newLL-oldLL|<stopping$}
+			\STATE 停止迭代；
+		\ENDIF
+	\ENDFOR
+\end{algorithmic}  
+\end{algorithm}  
+
+\section{实验}
+\section{本章小结}

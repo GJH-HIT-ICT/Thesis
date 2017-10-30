@@ -49,6 +49,9 @@ macros package]
 %% and easy adaption, it it always best to create a corresponding command for 
 %% variables in each math category.  
 %\providecommand{\Scalar}[1]{#1}% Scalar is the normal math typeset, italic
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{ \textbf{输入：}} %Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{ \textbf{输出：}} %UseOutput in the format of Algorithm 
 \providecommand{\Vector}[1]{\boldsymbol{#1}}% General vectors in bold italic
 %\renewcommand{\vec}[1]{\Vector{#1}}% redefine predefined vector if needed
 \providecommand{\unitVector}[1]{\boldsymbol{\mathbf{#1}}}% Unit vectors in bold roman

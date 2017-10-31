@@ -218,7 +218,7 @@ E[\Delta\theta^2]_t=\rho E[\Delta\theta^2]_{t-1}+(1-\rho)\Delta\theta_t^2\text{�
 	\FOR{i=1 \TO maxIter}
 		\STATE 根据公式（\ref{eq:gradLambda}--\ref{eq:gradT}）来计算各参数的梯度$g_i$；
 		\STATE 根据公式（\ref{eq:adadelta1}）更新各参数的历史梯度平方和$E[g^2]_i$；
-		\STATE 根据公式（\ref{eq:adadelta2}），利用$E[g^2]_i$和$E[\Delta\theta^2]_{i-1}$计算得到各参数的更新量$\Delta\theta_i$；
+		\STATE 根据公式（\ref{eq:adadelta2}），利用$E[g^2]_i$、$E[\Delta\theta^2]_{i-1}$以及$g_i$计算得到各参数的更新量$\Delta\theta_i$；
 		\STATE 根据公式（\ref{eq:adadelta3}）更新各参数的历史更新量的平方和$E[\Delta\theta^2]_i$；
 		\STATE 根据各参数的当前值和更新量$\Delta\theta_i$对各参数进行更新；
 		\STATE 根据公式（\ref{eq:mixrppLikelihood}）计算得到更新后的似然$newLL$；
@@ -231,3 +231,4 @@ E[\Delta\theta^2]_t=\rho E[\Delta\theta^2]_{t-1}+(1-\rho)\Delta\theta_t^2\text{�
 
 \section{实验}
 \section{本章小结}
+在本章，我们分析了微博消息传播过程中存在的去中心化现象，以及现有的模型在建模去中心化的传播过程中存在的缺陷和不足。我们进一步分析了去中心化的传播过程，发现它可以被拆分为几个单源传播子过程的叠加。因此，我们提出了一种叠加RPP模型的方法来建模微博消息的传播过程。与传统的方法相比，我们的方法不仅放宽了RPP模型的单源传播假设，同时也解决了基于自激励Hawkes过程的模型存在的参数学习困难的缺陷。我们的方法重点关注于中心传播用户所引发的子传播过程的建模，既满足去中心化结构的建模要求，同时大大减少了参数个数。在实际数据集的实验结果，也证明了我们模型的有效性。

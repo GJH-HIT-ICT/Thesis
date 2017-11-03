@@ -4,7 +4,7 @@
 流行度预测问题自被提出以来，受到了学术界和产业界的广泛关注。本章从流行度的统计特征分析、流行度预测方法以及流行度预测问题的可预测性三个方面入手，对流行度预测领域的相关工作进行了系统的总结和归纳，以便读者更好地了解和掌握该领域的相关知识，进而更好地理解本文的工作。
 
 \section{流行度的统计特征分析}
-在线内容的流行度分析工作最早源于网站缓存策略的研究。Cunha等人\citep{cunha1995characteristics}在研究站点中网页的访问情况时发现，网页被访问频率的分布服从Zipf定律\citep{zipf2016human}，也就是说：流行度排名为$i$的网页被用户访问的概率正比于$1/i$，如图\ref{fig:pageDist}所示。这一现象表明，网页的访问频次分布是不均匀的。Almeida等人\citep{almeida1996characterizing}在研究万维网中所有网页的访问频次时，也发现了同样的分布规律。
+在线内容的流行度分析工作最早源于网站缓存策略的研究\citep{cunha1995characteristics,almeida1996characterizing,breslau1999web,barford1999changes}。Cunha 等人\citep{cunha1995characteristics}在研究站点中网页的访问情况时发现，网页被访问频率的分布服从Zipf定律\citep{zipf2016human}，也就是说：流行度排名为$i$的网页被用户访问的概率正比于$1/i$，如图\ref{fig:pageDist}所示。这一现象表明，网页的访问频次分布是不均匀的。Almeida等人\citep{almeida1996characterizing}在研究万维网中所有网页的访问频次时，也发现了同样的分布规律。
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.75\textwidth]{docRank}
@@ -12,7 +12,8 @@
   \label{fig:pageDist}
 \end{figure}
 
-随着信息技术的发展，视频分享类网站和社交网络平台不断涌现，也引起了研究人员的关注。Gill等人\citep{gill2007youtube}收集并分析了视频网站Youtube\footnote{\url{https://www.youtube.com}}上视频的访问数据，发现视频的访问频次信息依然服从Zipf定律。Cha等人\citep{cha2009analyzing}对Youtube网站上的视频数据进行了详细的分析，发现网站中不同类别下的视频的观看数分布都服从幂律分布。Kwak等人\citep{kwak2010twitter}研究了社交网络平台Twitter\footnote{\url{https://twitter.com}}上消息的转发情况，发现参与消息转发的人数服从幂律分布，如图\ref{fig:tweetDist}所示。
+随着信息技术的发展，视频分享类网站和社交网络平台不断涌现，也引起了研究人员的关注\citep{chesire2001measurement,almeida2001analysis,sripanidkulchai2004analysis,
+yu2006understanding,gill2007youtube,cha2009analyzing}。Gill 等人\citep{gill2007youtube}收集并分析了视频网站Youtube\footnote{\url{https://www.youtube.com}}上视频的访问数据，发现视频的访问频次信息依然服从Zipf定律。Cha等人\citep{cha2009analyzing}对Youtube网站上的视频数据进行了详细的分析，发现网站中不同类别下的视频的观看数分布都服从幂律分布。Kwak等人\citep{kwak2010twitter}研究了社交网络平台Twitter\footnote{\url{https://twitter.com}}上消息的转发情况，发现参与消息转发的人数服从幂律分布，如图\ref{fig:tweetDist}所示。
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.75\textwidth]{tweetDist}
@@ -62,7 +63,7 @@ Pinto等人\citep{pinto2013using}研究了Youtube网站中视频的流行度时�
 
 内容特征方面，Tsagkias等人\citep{tsagkias2009predicting}抽取了新闻的内容特征，来对新闻的评论数进行事前预测：在新闻发布之前，利用新闻的元信息，来预测新闻的评论数。作者将这一预测问题形式化为两阶段分类问题：新闻发布能否接收到评论，以及接收到的评论数会高还是低。在特征方面，作者抽取了新闻中重要性较高的前100个词的词频信息作为新闻的文本特征，新闻中包含的不同类型的命名实体的个数作为新闻的语义特征。此外，作者还抽取了新闻的其他元信息特征。实验结果表明，文本特征和语义特征对分类结果有较好的指示作用。Hong等人\citep{hong2011predicting}同样将Twitter平台中消息的流行度预测问题形式化为一个两阶段分类问题：消息是否会被转发以及消息最终的流行度等级。作者利用TF-IDF模型和LDA主题模型\citep{blei2003latent}来抽取消息的内容特征，同时结合网络拓扑结构特征以及时序特征来进行预测。Bandari等人\citep{bandari2012pulse}研究了新闻订阅站点Feedzilla\footnote{\url{http://news.feedzilla.com}}的数据在Twitter平台上的流行度情况。作者抽取了新闻的四类内容特征来进行预测，包括新闻所属的类别、新闻源站点的信息、新闻的倾向性特征和新闻中包含的命名实体。作者分别使用回归和分类模型对新闻的流行度进行了预测，得到了很好的预测效果。Bian等人\citep{bian2014predicting}研究了腾讯微博\footnote{\url{http://t.qq.com}}中消息的传播情况和用户的参与情况，从兴趣导向、社交影响和病毒式传播三个方面，建模了用户和消息之间的相互作用，进而对消息的流行度和用户的参与情况进行预测。建模过程中，作者提出了一种多任务迁移模型来建模消息的内容，提取出消息中的主题信息，用于后续的预测任务。
 
-用户特征方面，最常见的用户特征是用户在社交网络中的拓扑结构信息，例如Twitter平台中用户的粉丝数和关注数信息\citep{gupta2012predicting,zhao2013short,kupavskii2013predicting,kong2014predicting}。用户的某些元信息也会被提取作为特征，包括用户账号的创建时长、用户历史发布的消息数\citep{suh2010want}、视频网站中的用户类别\citep{borghol2012untold}等。Yang等人\citep{yang2010modeling}在研究Twitter平台上消息的传播情况时，考虑了用户间的相互影响，提出了一种线性影响力模型。该模型可以在网络拓扑结构未知的情况下，来刻画用户间的影响力。Cui等人\citep{cui2013cascading}在研究Twitter平台上的消息爆发预测时，直接将用户身份作为特征。消息爆发预测问题旨在于给定消息在观测窗口内的流行度变化情况，预测消息最终的流行度能否达到爆发的阈值。作者在建模时借助于传感器的思想，将网络中所有的用户都当作传感器，只需要根据部分关键传感器的激活状态，即用户是否参与消息转发，就可以来判断消息最终能否爆发。因此，作者将爆发预测问题形式化为一个二分类问题，以所有的用户为特征，将用户在观测窗口内的激活状态转化成0-1向量作为输入，以消息最终的爆发情况作为输出，训练得到一个二分类器，进而对待预测的消息进行预测。
+用户特征方面，最常见的用户特征是用户在社交网络中的拓扑结构信息，例如Twitter平台中用户的粉丝数和关注数信息\citep{gupta2012predicting,zhao2013short,kupavskii2013predicting,kong2014predicting}。 用户的某些元信息也会被提取作为特征，包括用户账号的创建时长、用户历史发布的消息数\citep{suh2010want}、视频网站中的用户类别\citep{borghol2012untold}等。Yang等人\citep{yang2010modeling}在研究Twitter平台上消息的传播情况时，考虑了用户间的相互影响，提出了一种线性影响力模型。该模型可以在网络拓扑结构未知的情况下，来刻画用户间的影响力。Cui等人\citep{cui2013cascading}在研究Twitter平台上的消息爆发预测时，直接将用户身份作为特征。消息爆发预测问题旨在于给定消息在观测窗口内的流行度变化情况，预测消息最终的流行度能否达到爆发的阈值。作者在建模时借助于传感器的思想，将网络中所有的用户都当作传感器，只需要根据部分关键传感器的激活状态，即用户是否参与消息转发，就可以来判断消息最终能否爆发。因此，作者将爆发预测问题形式化为一个二分类问题，以所有的用户为特征，将用户在观测窗口内的激活状态转化成0-1向量作为输入，以消息最终的爆发情况作为输出，训练得到一个二分类器，进而对待预测的消息进行预测。
 
 传播级联的结构特征方面，Bao等人\citep{bao2013popularity}分析了新浪微博中消息的传播级联情况，重点研究了传播级联形成的转发树的深度和链接密度情况，发现这两个特征与流行度的变化之间存在着非常强的相关性。作者将这两个因素加入到S-H模型中，发现预测精度得到了很大的提升。
 
@@ -95,7 +96,7 @@ f(t)=\frac{dF(t)}{dt}=\frac{P(t \le T < t+dt)}{dt}\text{。}
 \label{eq:intensityTransform}
 \begin{split}
 x(t) & =\frac{P\{[t,t+dt)\text{内事件发生}|H_t\}}{dt}=\frac{P\{t \le T < t+dt|T \ge t\}}{dt} \\
-& =\cfrac{\cfrac{P\{t \le T < t+dt\}}{P\{T \ge t\}}}{dt}=\cfrac{\cfrac{P\{t \le T < t+dt\}}{dt}}{P\{T \ge t\}}=\frac{f(t)}{S(t)}\text{。} 
+& =\cfrac{\cfrac{P\{t \le T < t+dt\}}{P\{T \ge t\}}}{dt}=\cfrac{\cfrac{P\{t \le T < t+dt\}}{dt}}{P\{T \ge t\}}=\frac{f(t)}{S(t)}\text{。}
 \end{split}
 \end{eqnarray}
 将密度函数$f(t)$的定义$f(t)=F'(t)=(1-S(t))=-S'(t)$代入公式（\ref{eq:intensityTransform}），可以得到：
